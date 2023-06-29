@@ -4,9 +4,9 @@
   "version": "${version}",
 
   "name": "${name}",
-  "description": "Template for my fabric mods",
+  "description": "Explosions Holes Be Gone",
   "authors": [
-    "Fallen_Breath"
+    "Skidam"
   ],
   "contact": {
     "homepage": "https://www.curseforge.com/",
@@ -18,12 +18,14 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "me.fallenbreath.template_mod.TemplateMod"
+      "pl.skidam.explosionsholesbegone.ExplosionsHolesBeGone"
     ]
   },
   "mixins": [
-    "template_mod.mixins.json"
+    "explosionsholesbegone.json"
   ],
+
+  "accessWidener" : "explosionsholesbegone.accesswidener",
 
   "depends": {
     "fabricloader": ">=0.11.4",

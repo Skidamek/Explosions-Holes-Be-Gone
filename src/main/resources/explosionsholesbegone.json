@@ -1,0 +1,17 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "pl.skidam.explosionsholesbegone.mixins",
+  "mixins": [
+    "CreeperEntityMixin",
+    "FireballEntityMixin",
+    "TntEntityMixin",
+    "WitherSkullEntityMixin",
+    "ServerWorldMixin"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

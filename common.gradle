@@ -31,16 +31,35 @@ dependencies {
 	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
+	include(implementation(annotationProcessor("com.github.llamalad7.mixinextras:mixinextras-fabric:0.2.0-beta.8")))
+
 	// runtime mods
-//	if (mcVersion < 11904) {
-//		modRuntimeOnly(mcVersion < 11900 ? "com.github.astei:lazydfu:0.1.2" : "com.github.Fallen-Breath:lazydfu:a7cfc44c0c")
-//	}
+	if (mcVersion < 11904) {
+		modRuntimeOnly(mcVersion < 11900 ? "com.github.astei:lazydfu:0.1.2" : "com.github.Fallen-Breath:lazydfu:a7cfc44c0c")
+	}
+
+	Set<String> apiModules = [
+			"fabric-api-base"
+	]
+
+	if (mcVersion < 11900) {
+		apiModules.add("fabric-command-api-v1")
+	} else {
+		apiModules.add("fabric-command-api-v2")
+	}
+
+	apiModules.forEach {
+		include(modImplementation(fabricApi.module(it, fabric_api_version)))
+	}
 
 	// dependencies
 //	include(modImplementation(fabricApi.module("fabric-resource-loader-v0", project.fabric_api_version)))
 }
 
 loom {
+
+	accessWidenerPath = file("../../src/main/resources/explosionsholesbegone.accesswidener")
+
 	runConfigs.all {
 		// to make sure it generates all "Minecraft Client (:subproject_name)" applications
 		ideConfigGenerated = true
@@ -99,7 +118,7 @@ processResources {
 // https://github.com/Fallen-Breath/yamlang
 yamlang {
 	targetSourceSets = [sourceSets.main]
-	inputDir = 'assets/template_mod/lang'
+	inputDir = 'assets/explosionsholesbegone/lang'
 }
 
 // ensure that the encoding is set to UTF-8, no matter what the system default is
@@ -150,7 +169,7 @@ license {
 	}
 	ext {
 		name = project.mod_name
-		author = 'Fallen_Breath'
+		author = 'Skidam'
 		year = Calendar.getInstance().get(Calendar.YEAR).toString()
 	}
 }

@@ -18,36 +18,29 @@
  * along with TemplateMod.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package me.fallenbreath.template_mod.mixins;
+package pl.skidam.explosionsholesbegone.mixins;
 
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.world.ServerWorld;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import pl.skidam.explosionsholesbegone.ExplosionsHolesBeGone;
 
-@Mixin(MinecraftServer.class)
-public abstract class MinecraftServerMixin
-{
-	@Inject(
-			//#if MC >= 11600
-			//$$ method = "runServer",
-			//#else
-			method = "run",
-			//#endif
-			at = @At("HEAD")
-	)
-	private void onRun(CallbackInfo ci)
-	{
-		//#if MC >= 11500
-		System.err.println("Hello world from mc11500 branch");
-		//#elseif MC >= 11400
-		//$$ System.err.println("Hello world from mc11400 branch");
-		//#endif
+import java.util.function.BooleanSupplier;
 
-		CompoundTag nbt = new CompoundTag();
-		nbt.putString("key", "value");
-		System.err.println("nbt: " + nbt);
-	}
+@Mixin(ServerWorld.class)
+public class ServerWorldMixin {
+
+    @Final
+    @Shadow
+    private MinecraftServer server;
+
+    @Inject(method = "tick", at = @At("TAIL"))
+    protected void tick(BooleanSupplier shouldKeepTicking, CallbackInfo ci) {
+        ExplosionsHolesBeGone.rebuildExplosion(server);
+    }
 }
